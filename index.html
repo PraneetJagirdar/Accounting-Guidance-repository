@@ -2,26 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light dark" />
   <title>Accounting & Regulatory Standards – India</title>
 
   <style>
-    /* ====== TOKENS ====== */
+    /* ===== TOKENS ===== */
     :root{
-      --bg:#0b132b;
-      --bg2:#0f1e3a;
-      --card:rgba(17,25,40,.65);
-      --border:rgba(255,255,255,.12);
-      --text:#e6e9f2;
-      --muted:#a9b4d6;
-      --accent:#6ae3ff;
-      --accent-2:#9b8cff;
-      --shadow:0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
-      --radius:16px;
+      --bg:#0b132b; --bg2:#0f1e3a; --card:rgba(17,25,40,.65);
+      --border:rgba(255,255,255,.12); --text:#e6e9f2; --muted:#a9b4d6;
+      --accent:#6ae3ff; --accent-2:#9b8cff; --shadow:0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
+      --radius:16px; --header-h:60px; --topnav-h:44px; --container:1200px;
     }
     @media (prefers-color-scheme: light){
       :root{
@@ -32,68 +23,77 @@
     }
     *{box-sizing:border-box}
     html,body{height:100%}
+    html{scroll-behavior:smooth}
     body{
       margin:0;
-      font-family: "Book Antiqua","Palatino Linotype",Palatino,serif;
+      font-family:"Book Antiqua","Palatino Linotype",Palatino,serif;
       color:var(--text);
       background:
         radial-gradient(1200px 800px at 10% -20%, rgba(106,227,255,.25), transparent 60%),
         radial-gradient(1200px 800px at 110% 10%, rgba(155,140,255,.18), transparent 60%),
         linear-gradient(180deg, var(--bg), var(--bg2));
       background-attachment: fixed;
+      padding-top: calc(var(--header-h) + var(--topnav-h)); /* reserve space for sticky bars */
     }
-    /* Subtle ocean tint layer (pure CSS – no image needed) */
-    body::after{
-      content:""; position:fixed; inset:0; z-index:-1;
+    /* Subtle overlay */
+    body::after{content:"";position:fixed;inset:0;z-index:-1;opacity:.9;
       background:
         radial-gradient(1200px 800px at 10% -20%, rgba(106,227,255,.20), transparent 60%),
         radial-gradient(1200px 800px at 110% 10%, rgba(155,140,255,.14), transparent 60%),
         linear-gradient(180deg, var(--bg), var(--bg2));
-      opacity:.9;
     }
+
+    .wrap{max-width:var(--container);margin:0 auto;padding:0 20px}
 
     .skip{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
     .skip:focus{left:16px;top:16px;width:auto;height:auto;background:#000;color:#fff;padding:8px 12px;border-radius:8px;z-index:9999}
 
+    /* ===== Sticky Site Header ===== */
     .site-header{
-      position:sticky; top:0; z-index:50;
-      display:flex; justify-content:space-between; align-items:center;
-      padding:14px 20px; border-bottom:1px solid var(--border);
+      height:var(--header-h); position:fixed; top:0; left:0; right:0; z-index:1000;
+      display:flex; align-items:center; border-bottom:1px solid var(--border);
       background:rgba(10,16,32,.6); backdrop-filter:saturate(180%) blur(14px)
     }
-    .brand{display:flex; align-items:center; gap:10px}
-    .brand h1{margin:0; font-size:18px}
-    .brand .sub{font-size:12px; color:var(--muted)}
+    .site-header .brand{display:flex; align-items:center; gap:10px}
+    .site-header h1{margin:0; font-size:18px}
+    .site-header .sub{font-size:12px; color:var(--muted)}
+    .site-header .actions{margin-left:auto}
     .site-header .actions button{
       all:unset; cursor:pointer; padding:8px; border-radius:10px; border:1px solid var(--border)
     }
     .site-header .actions button:hover{background:rgba(255,255,255,.06)}
 
-    .hero{padding:30px 20px}
-    .hero-inner{
-      max-width:1000px; margin:0 auto; background:var(--card); border:1px solid var(--border);
-      border-radius:var(--radius); box-shadow:var(--shadow); padding:22px
+    /* ===== NEW: Sticky Top Section Pills ===== */
+    .topnav{
+      position:fixed; top:var(--header-h); left:0; right:0; z-index:999;
+      border-bottom:1px solid var(--border);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
     }
-    .hero h2{margin:0 0 6px; font-size:28px}
-    .hero p{margin:0 0 14px; color:var(--muted)}
-    .search-wrap{
-      display:flex; align-items:center; gap:8px;
-      background:rgba(255,255,255,.06); border:1px solid var(--border);
-      border-radius:12px; padding:8px 10px; margin:8px 0 16px
-    }
-    .search-wrap input{flex:1; appearance:none; background:transparent; border:0; outline:none; color:var(--text)}
-    .pillbar{display:flex; flex-wrap:wrap; gap:8px}
+    .pillbar{display:flex; gap:8px; align-items:center; height:var(--topnav-h); overflow:auto; scrollbar-width:none}
+    .pillbar::-webkit-scrollbar{display:none}
     .pillbar a{
-      display:inline-block; padding:6px 10px; border-radius:999px;
-      border:1px solid var(--border); text-decoration:none; color:var(--text)
+      flex:0 0 auto; padding:6px 10px; border-radius:999px; border:1px solid var(--border);
+      text-decoration:none; color:var(--text); font-size:.92rem; white-space:nowrap
     }
     .pillbar a:hover{background:linear-gradient(90deg, rgba(106,227,255,.25), rgba(155,140,255,.25));}
 
-    .layout{
-      display:grid; grid-template-columns:260px 1fr; gap:16px;
-      max-width:1200px; margin:0 auto; padding:10px 20px
+    /* ===== Main hero ===== */
+    .hero{padding:20px 0}
+    .hero-inner{
+      background:var(--card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px
     }
-    .toc{position:sticky; top:78px; align-self:start}
+    .hero h2{margin:0 0 6px; font-size:26px}
+    .hero p{margin:0 0 10px; color:var(--muted)}
+    .search-wrap{
+      display:flex; align-items:center; gap:8px; margin-top:10px;
+      background:rgba(255,255,255,.06); border:1px solid var(--border);
+      border-radius:12px; padding:8px 10px
+    }
+    .search-wrap input{flex:1; background:transparent; border:0; outline:none; color:var(--text)}
+
+    /* ===== Layout: TOC + content ===== */
+    .layout{display:grid; grid-template-columns:260px 1fr; gap:16px}
+    .toc{position:sticky; top:calc(var(--header-h) + var(--topnav-h) + 12px); align-self:start}
     .toc nav{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:14px}
     .toc h3{margin:0 0 6px; font-size:14px; color:var(--muted)}
     .toc ol{margin:8px 0 0 16px; padding:0; line-height:1.6}
@@ -101,74 +101,88 @@
     .toc a:hover{color:var(--accent)}
 
     .cards{display:grid; gap:16px}
-    .card{
-      background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
-      box-shadow:var(--shadow); padding:18px
-    }
+    .card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:18px; animation:fadeUp .45s ease both}
     .card.wide{grid-column:1 / -1}
     .card .lead{color:var(--muted)}
     .card a{color:var(--accent)} .card a:hover{color:var(--accent-2)}
     .card-head{display:flex; justify-content:space-between; align-items:center}
-    .ghost{
-      background:transparent; border:1px solid var(--border); color:var(--text);
-      padding:6px 10px; border-radius:10px; cursor:pointer
-    }
+    .ghost{background:transparent; border:1px solid var(--border); color:var(--text); padding:6px 10px; border-radius:10px; cursor:pointer}
     .ghost:hover{background:rgba(255,255,255,.06)}
 
-    /* Collapsible lists */
+    /* Collapsibles */
     details.drop{border:1px solid var(--border); border-radius:12px; margin-top:10px; background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02))}
-    details.drop > summary{
-      list-style:none; cursor:pointer; padding:10px 12px; font-weight:600; position:relative
-    }
-    details.drop > summary::marker, details.drop > summary::-webkit-details-marker{display:none}
-    details.drop > summary:after{
-      content:'▸'; position:absolute; right:12px; transition:transform .2s ease; opacity:.7
-    }
-    details.drop[open] > summary:after{transform:rotate(90deg)}
+    details.drop>summary{list-style:none; cursor:pointer; padding:10px 12px; font-weight:600; position:relative}
+    details.drop>summary::marker, details.drop>summary::-webkit-details-marker{display:none}
+    details.drop>summary:after{content:'▸'; position:absolute; right:12px; transition:transform .2s ease; opacity:.7}
+    details.drop[open]>summary:after{transform:rotate(90deg)}
     .links{margin:10px 0 0 18px}
     .links li{margin:6px 0}
     .links.columns{columns: 3 240px}
+
+    /* ===== CRITICAL: Offset for sticky header & TOC on anchor scroll ===== */
+    /* Any element you link to (cards/sections) will keep the title visible below the sticky bars */
+    .card, .card[id]{scroll-margin-top: calc(var(--header-h) + var(--topnav-h) + 16px);}
+
+    /* Updates list */
+    .updates{display:grid; gap:12px; margin-top:12px}
+    .update{padding:12px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)); border:1px solid var(--border)}
+    .update h4{margin:0 0 6px}
+    .update .meta{font-size:12px; color:var(--muted)}
+
+    .site-footer{margin:26px auto; color:var(--muted);}
+
+    @keyframes fadeUp{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)}}
+
     @media(max-width:960px){
       .layout{grid-template-columns:1fr}
       .toc{display:none}
       .links.columns{columns:1}
     }
-
-    /* Updates list */
-    .updates{display:grid; gap:12px; margin-top:12px}
-    .update{
-      padding:12px; border-radius:12px;
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      border:1px solid var(--border)
-    }
-    .update h4{margin:0 0 6px}
-    .update .meta{font-size:12px; color:var(--muted)}
-
-    .site-footer{margin:26px auto; max-width:1200px; color:var(--muted); padding:0 20px}
-
-    @keyframes fadeUp{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)}}
-    .card{animation:fadeUp .45s ease both}
   </style>
 </head>
 <body>
   #contentSkip to content</a>
 
-  <header class="site-header" role="banner">
-    <div class="brand">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M3 4h18v2H3V4zm0 5h18v2H3V9zm0 5h12v2H3v-2zm0 5h18v2H3v-2z" fill="currentColor"/>
-      </svg>
-      <h1>Accounting & Regulatory Standards</h1>
-      <span class="sub">India • curated official links + live updates</span>
-    </div>
-    <div class="actions">
-      <button id="themeToggle" aria-label="Toggle theme" title="Toggle theme">
-        <svg class="sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M6.76 4.84l-1.8-1.79L3.17 4.84 4.96 6.63 6.76 4.84zM1 13h3v-2H1v2zm10-9h2V1h-2v3zm7.03.21l-1.79 1.79 1.79 1.79 1.79-1.79-1.79-1.79zM17 13h3v-2h-3v2zM12 18a6 6 0 100-12 6 6 0 000 12zm-1 5h2v-3h-2v3zm7.07-2.93l1.79 1.79 1.41-1.41-1.79-1.79-1.41 1.41zM4.96 17.37l-1.79 1.79 1.41 1.41 1.79-1.79-1.41-1.41z"/></svg>
-      </button>
+  <!-- ===== Sticky Site Header ===== -->
+  <header class="site-header">
+    <div class="wrap" style="display:flex; align-items:center; gap:12px;">
+      <div class="brand">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 4h18v2H3V4zm0 5h18v2H3V9zm0 5h12v2H3v-2zm0 5h18v2H3v-2z" fill="currentColor"/></svg>
+        <div>
+          <h1>Accounting & Regulatory Standards</h1>
+          <div class="sub">India • curated official links + live updates</div>
+        </div>
+      </div>
+      <div class="actions" style="margin-left:auto">
+        <button id="themeToggle" aria-label="Toggle theme" title="Toggle theme">
+          <svg class="sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M6.76 4.84l-1.8-1.79L3.17 4.84 4.96 6.63 6.76 4.84zM1 13h3v-2H1v2zm10-9h2V1h-2v3zm7.03.21l-1.79 1.79 1.79 1.79 1.79-1.79-1.79-1.79zM17 13h3v-2h-3v2zM12 18a6 6 0 100-12 6 6 0 000 12zm-1 5h2v-3h-2v3zm7.07-2.93l1.79 1.79 1.41-1.41-1.79-1.79-1.41 1.41zM4.96 17.37l-1.79 1.79 1.41 1.41 1.79-1.79-1.41-1.41z"/></svg>
+        </button>
+      </div>
     </div>
   </header>
 
-  <div class="hero">
+  <!-- ===== NEW: Sticky top section links (always visible) ===== -->
+  <div class="topnav">
+    <div class="wrap">
+      <nav class="pillbar" aria-label="Quick jump to sections">
+        #indasInd AS</a>
+        #asAS</a>
+        #auditAuditing</a>
+        #companiesCompanies Act</a>
+        #gstGST</a>
+        <directtaxIncome‑tax</a>
+        #sebiSEBI</a>
+        #rbiRBI & FEMA</a>
+        #nfraNFRA</a>
+        #llpLLP</a>
+        #icai-gnICAI GN</a>
+        #igaapIntl GAAP</a>
+        #updatesAmendments</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="wrap hero">
     <div class="hero-inner">
       <h2>One stop. Zero hunting.</h2>
       <p>Browse authoritative sources for Ind AS, AS, SAs, Companies Act, GST, Income‑tax, SEBI, RBI/FEMA, NFRA & more. Stay current with an auto‑updating amendments feed.</p>
@@ -177,30 +191,24 @@
         <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 001.57-4.23A6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 21.49 21.49 20 15.5 14zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
         <input id="quickSearch" type="search" placeholder="Quick filter: Try 'LODR', 'Sec 129', 'Ind AS 115'…" />
       </div>
-
-      <div class="pillbar" aria-label="Quick jump">
-        #indasInd AS</a>#asAS</a>#auditAuditing</a>
-        #companiesCompanies Act</a><a href="#gst href="#Income‑tax</a>
-        <a href="#sebia href & FEMA</a><a href="#nfra        #llpLLP</a>#icai-gnICAI GN</a>#igaapIntl GAAP</a>
-        #updatesAmendments</a>
-      </div>
     </div>
   </div>
 
-  <main id="content" class="layout">
-    <aside class="toc" aria-label="Sections">
+  <main id="content" class="wrap layout">
+    <!-- TOC -->
+    <aside class="toc" aria-label="On this page">
       <nav>
         <h3>On this page</h3>
         <ol>
-          <li><a href="#AS</a></li>
-          <li><a href="#asi>
+          <li>#indasInd AS</a></li>
+          <li>#asAS</a></li>
           <li>#auditAuditing & Assurance</a></li>
           <li>#companiesCompanies Act & MCA</a></li>
           <li>#gstGST</a></li>
-          <li>#directtaxIncome‑tax</a></li>
+          <li><a href="#directtaxx</a></li>
           <li>#sebiSEBI</a></li>
-          <li>#rbiRBI / FEMA</a></li>
-          <li>#nfraNFRA</a></li>
+          <li><abiRBI / FEMA</a></li>
+          <li><a hrefRA</a></li>
           <li>#llpLLP</a></li>
           <li>#icai-gnICAI Guidance Notes</a></li>
           <li>#igaapInternational GAAP</a></li>
@@ -209,9 +217,9 @@
       </nav>
     </aside>
 
+    <!-- Content cards -->
     <section class="cards">
-
-      <!-- ===== Ind AS ===== -->
+      <!-- Ind AS -->
       <article id="indas" class="card">
         <h2>Indian Accounting Standards (Ind AS)</h2>
         <p class="lead">Official resources and the latest MCA alignments.</p>
@@ -224,19 +232,19 @@
           <ul class="links columns">
             <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 101</a></li>
             <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 102</a></li>
-            <!-- … add more as needed … -->
+            <!-- … -->
           </ul>
         </details>
         <details class="drop"><summary>Core Ind AS (Vol II)</summary>
           <ul class="links columns">
             <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 1</a></li>
-            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 2</a></li>
-            <!-- … add more as needed … -->
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-II.html>Ind AS 2</a></li>
+            <!-- … -->
           </ul>
         </details>
       </article>
 
-      <!-- ===== AS ===== -->
+      <!-- AS -->
       <article id="as" class="card">
         <h2>Accounting Standards (AS) – non‑Ind AS companies</h2>
         <ul class="links">
@@ -251,7 +259,7 @@
         </details>
       </article>
 
-      <!-- ===== Auditing ===== -->
+      <!-- Auditing -->
       <article id="audit" class="card">
         <h2>Auditing & Assurance</h2>
         <ul class="links">
@@ -266,22 +274,22 @@
         </details>
       </article>
 
-      <!-- ===== Companies Act ===== -->
+      <!-- Companies Act -->
       <article id="companies" class="card">
         <h2>Companies Act, 2013 & Rules</h2>
         <ul class="links">
           <li><a target="_blank" href="https://www.indiacode.nic.in/bitstream/123456789/2114/5/A2013-18.pdf">Companies Act, 2013 (Bare Act)</a></li>
-          <li><a target="_blank" href="https://www.mca.gov.in/content/mca/global/en/acts-rules/ebooks/notifications.html)</a></li>
+          <li><a target="_blank" href="https://www.mca.gov.in/content/mca/global/encations.htmlMCA Notifications (e‑Book)</a></li>
         </ul>
         <details class="drop"><summary>Key Rules</summary>
           <ul class="links columns">
-            <li><a target="_blank" href="https://www.mca.gov.in/content/mca/global/encations.htmlCompanies (Accounts) Rules, 2014</a></li>
+            <li><a target="_blank" href="https://www.mca.gov.in/content/mca/global/en/actsns.htmlCompanies (Accounts) Rules, 2014</a></li>
             <!-- … -->
           </ul>
         </details>
       </article>
 
-      <!-- ===== GST ===== -->
+      <!-- GST -->
       <article id="gst" class="card">
         <h2>Goods & Services Tax (GST)</h2>
         <ul class="links">
@@ -295,16 +303,16 @@
         </details>
       </article>
 
-      <!-- ===== Income Tax ===== -->
+      <!-- Income-tax -->
       <article id="directtax" class="card">
         <h2>Direct Tax (Income‑tax)</h2>
         <ul class="links">
           <li><a target="_blank" href="https://incometaxindia.gov.in/Pages/acts/income-tax-act.aspx">Income‑tax Act, 1961</a></li>
-          <li><a target="_blank" href="https://incometaxindia.gov.in/pages/rules/inncome‑tax Rules, 1962</a></li>
+          <li>https://incometaxindia.gov.in/pages/rules/income-tax-rules-1962.aspxIncome‑tax Rules, 1962</a></li>
         </ul>
       </article>
 
-      <!-- ===== SEBI ===== -->
+      <!-- SEBI -->
       <article id="sebi" class="card">
         <h2>Capital Markets (SEBI)</h2>
         <ul class="links">
@@ -313,7 +321,7 @@
         </ul>
       </article>
 
-      <!-- ===== RBI / FEMA ===== -->
+      <!-- RBI / FEMA -->
       <article id="rbi" class="card">
         <h2>Banking / FEMA (RBI & DEA)</h2>
         <ul class="links">
@@ -322,7 +330,7 @@
         </ul>
       </article>
 
-      <!-- ===== NFRA ===== -->
+      <!-- NFRA -->
       <article id="nfra" class="card">
         <h2>NFRA (Oversight)</h2>
         <ul class="links">
@@ -331,7 +339,15 @@
         </ul>
       </article>
 
-      <!-- ===== ICAI Guidance Notes ===== -->
+      <!-- LLP -->
+      <article id="llp" class="card">
+        <h2>Limited Liability Partnership (LLP)</h2>
+        <ul class="links">
+          <li><a target="_blank" href="https://www.indiacode.nic.in/bitstream/123456789/2023/1/A2009-06.pdf">LLP Act, 2008 (Bare Act)</a></li>
+        </ul>
+      </article>
+
+      <!-- ICAI GN -->
       <article id="icai-gn" class="card">
         <h2>ICAI Guidance Notes</h2>
         <ul class="links">
@@ -341,7 +357,7 @@
         </ul>
       </article>
 
-      <!-- ===== Intl GAAP ===== -->
+      <!-- Intl GAAP -->
       <article id="igaap" class="card">
         <h2>International GAAP – Big 4 (Public resources)</h2>
         <details class="drop"><summary>Deloitte</summary>
@@ -370,85 +386,73 @@
         </details>
       </article>
 
-      <!-- ===== Latest Amendments ===== -->
+      <!-- Latest Amendments -->
       <article id="updates" class="card wide">
         <div class="card-head">
           <h2>Latest Amendments & Notifications</h2>
-          <div class="card-actions">
-            <button id="refresh" class="ghost" type="button">Refresh</button>
-          </div>
+          <div class="card-actions"><button id="refresh" class="ghost" type="button">Refresh</button></div>
         </div>
         <div class="updates" id="updates-list" aria-live="polite"></div>
       </article>
-
     </section>
   </main>
 
-  <footer class="site-footer">
+  <footer class="wrap site-footer">
     <div>© <span id="year"></span> • Built for quick compliance navigation • #contentBack to top</a></div>
   </footer>
 
   <script>
-    // ===== Theme toggle with localStorage =====
+    // Theme toggle
     (function(){
-      const btn = document.getElementById('themeToggle');
-      if(!btn) return;
-      const key = 'prefers-theme';
-      function apply(t){ t==='light' ? document.documentElement.classList.add('light') : document.documentElement.classList.remove('light'); }
-      const saved = localStorage.getItem(key); if(saved) apply(saved);
-      btn.addEventListener('click', ()=>{ const now = document.documentElement.classList.contains('light')? 'dark':'light'; localStorage.setItem(key, now); apply(now); });
+      const btn=document.getElementById('themeToggle'); if(!btn) return;
+      const key='prefers-theme';
+      const apply=t=> t==='light' ? document.documentElement.classList.add('light')
+                                  : document.documentElement.classList.remove('light');
+      const saved=localStorage.getItem(key); if(saved) apply(saved);
+      btn.addEventListener('click',()=>{ const now=document.documentElement.classList.contains('light')?'dark':'light'; localStorage.setItem(key,now); apply(now); });
     })();
 
-    // ===== Quick filter (cards + auto-open matching details) =====
+    // Quick filter + auto-open details
     (function(){
-      const input = document.getElementById('quickSearch');
-      if(!input) return;
-      const cards = Array.from(document.querySelectorAll('.cards .card'));
-      const norm = s => (s||'').toLowerCase();
-      input.addEventListener('input', ()=>{
-        const q = norm(input.value);
+      const input=document.getElementById('quickSearch'); if(!input) return;
+      const cards=[...document.querySelectorAll('.cards .card')];
+      const norm=s=>(s||'').toLowerCase();
+      input.addEventListener('input',()=>{
+        const q=norm(input.value);
         cards.forEach(card=>{
-          const txt = norm(card.textContent);
-          const show = (q==='' || txt.includes(q));
-          card.style.display = show ? '' : 'none';
-          // auto-open collapsibles that match
-          card.querySelectorAll('details.drop').forEach(d=>{
-            d.open = (q!=='' && norm(d.textContent).includes(q));
-          });
+          const show=(q===''||norm(card.textContent).includes(q));
+          card.style.display=show?'':'none';
+          card.querySelectorAll('details.drop').forEach(d=> d.open = q!=='' && norm(d.textContent).includes(q));
         });
       });
     })();
 
-    // ===== Amendments loader =====
+    // Amendments loader
     async function loadUpdates(){
-      const container = document.getElementById('updates-list');
+      const list=document.getElementById('updates-list');
       try{
-        const res = await fetch('data/amendments.json?_=' + Date.now());
-        const data = await res.json();
-        const items = (data.items || []).slice(0, 60);
-        if(!items.length){
-          container.innerHTML = '<p class="lead" style="color:var(--muted)">No items yet. If this is your first run, go to <strong>Actions ▸ Fetch amendments daily ▸ Run workflow</strong> to generate <code>data/amendments.json</code>.</p>';
-          return;
-        }
-        container.innerHTML = '';
-        items.forEach(item=>{
-          const div = document.createElement('div');
-          div.className = 'update';
-          const date = item.date ? ` • ${item.date}` : '';
-          div.innerHTML = `
-            <h4><a target="_blank" hrefe}</a></h4>
-            <div class="meta">${item.source || ''}${date}</div>
-            ${item.summary ? `<p>${item.summary}</p>` : ''}
-          `;
-          container.appendChild(div);
+        const res=await fetch('data/amendments.json?_='+Date.now());
+        const data=await res.json();
+        const items=(data.items||[]).slice(0,60);
+        if(!items.length){ list.innerHTML='<p class="lead" style="color:var(--muted)">No items yet. First run the workflow once: <strong>Actions ▸ Fetch amendments daily ▸ Run workflow</strong>.</p>'; return; }
+        list.innerHTML='';
+        items.forEach(it=>{
+          const div=document.createElement('div'); div.className='update';
+          div.innerHTML=`<h4>${it.link}${it.title}</a></h4>
+                         <div class="meta">${it.source||''}${it.date?` • ${it.date}`:''}</div>
+                         ${it.summary?`<p>${it.summary}</p>`:''}`;
+          list.appendChild(div);
         });
       }catch(e){
         console.error(e);
-        container.innerHTML = '<p class="lead" style="color:var(--muted)">Could not load updates. Make sure <code>data/amendments.json</code> exists in your repository.</p>';
+        list.innerHTML='<p class="lead" style="color:var(--muted)">Could not load updates. Ensure <code>data/amendments.json</code> exists in your repo.</p>';
       }
     }
     document.getElementById('refresh')?.addEventListener('click', loadUpdates);
-    window.addEventListener('DOMContentLoaded', ()=>{ document.getElementById('year').textContent = new Date().getFullYear(); loadUpdates(); });
+    window.addEventListener('DOMContentLoaded', ()=>{
+      document.getElementById('year').textContent=new Date().getFullYear();
+      loadUpdates();
+    });
   </script>
 </body>
 </html>
