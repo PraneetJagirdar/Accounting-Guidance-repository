@@ -1,0 +1,26 @@
+{
+  "last_updated": "2026-01-30",
+  "items": [
+    {
+      "source": "RBI Notifications",
+      "title": "RBI issues CRR/SLR Amendment Directions across bank categories",
+      "date": "2026-01-22",
+      "link": "https://www.rbi.org.in/scripts/notificationuser.aspx",
+      "summary": "A series of directions revising CRR/SLR norms for commercial, small finance, payments, regional rural and cooperative banks."
+    },
+    {
+      "source": "SEBI Circulars",
+      "title": "Introduction of Closing Auction Session (CAS) in Equity Cash Segment",
+      "date": "2026-01-16",
+      "link": "https://www.sebi.gov.in/sebiweb/home/HomeAction.do?doListing=yes&sid=1&ssid=7&smid=0",
+      "summary": "SEBI introduces closing auction session and modifies pre-open session framework."
+    },
+    {
+      "source": "MCA / Ind AS Rules",
+      "title": "Companies (Indian Accounting Standards) Second Amendment Rules, 2025",
+      "date": "2025-08-13",
+      "link": "https://ca2013.com/notifications/mca-notification-dated-19-08-2025-regarding-companies-indian-accounting-standards-second-amendment-rules-2025/",
+      "summary": "Amendments for classification of liabilities, supplier finance disclosures and Pillar Two relief."
+    }
+  ]
+}
