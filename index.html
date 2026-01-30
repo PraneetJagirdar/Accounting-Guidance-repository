@@ -127,10 +127,14 @@
     .toc h3{margin:0 0 6px; font-size:14px; color:var(--muted)}
     .toc ol{margin:8px 0 0 16px; padding:0; line-height:1.6}
     .toc li{list-style:decimal}
-    .toc a{color:var(--text); text-decoration:none; word-break:break-word}
+    .toc a{
+      color:var(--text); text-decoration:none; word-break:break-word; display:inline-block;
+      pointer-events:auto;
+    }
     .toc a:hover{color:var(--accent)}
-    /* Hide any extension-injected href previews */
-    .toc code, .toc .hash, .toc [data-href]::before{ display:none; }
+    /* Hide any extension-injected href previews (before/after pseudo content) */
+    .toc a::before, .toc a::after{ content:none !important; }
+    .toc code, .toc .hash, .toc [data-href]::before{ display:none !important; }
 
     .cards{display:grid; gap:16px; z-index:10}
     .card{
@@ -200,16 +204,16 @@
   <div class="topnav">
     <div class="wrap">
       <nav class="pillbar" aria-label="Quick jump to sections">
-        #indasInd AS</a>
+        <andasInd AS</a>
         #asAS</a>
         #auditAuditing</a>
         #companiesCompanies Act</a>
         #gstGST</a>
         #directtaxIncome‑tax</a>
-        <a href="#se>
-        <abiRBI & FEMA</a>
+        <a href="#/a>
+        #rbiRBI & FEMA</a>
         #nfraNFRA</a>
-        #llpLLP</a>
+        <alpLLP</a>
         #icai-gnICAI GN</a>
         #igaapIntl GAAP</a>
         #updatesAmendments</a>
@@ -232,7 +236,7 @@
 
   <!-- ========== Main: TOC + Cards ========== -->
   <main id="content" class="wrap layout">
-    <!-- Left TOC (non-overlapping, sticky) -->
+    <!-- Left TOC -->
     <aside class="toc" aria-label="On this page">
       <nav>
         <h3>On this page</h3>
@@ -241,14 +245,14 @@
           <li>#asAS</a></li>
           <li>#auditAuditing & Assurance</a></li>
           <li>#companiesCompanies Act & MCA</a></li>
-          <li>#gstGST</a></li>
-          <li><a hreftaxIncome‑tax</a></li>
-          <li>#sebiSEBI</a></li>
-          <li>#rbiRBI / FEMA</a></li>
+          <li><a href="#gstli>
+          <li><a href="#directtaxx</a></li>
+          <li><sebiSEBI</a></li>
+          <li><a href="#rbiA</a></li>
           <li>#nfraNFRA</a></li>
           <li>#llpLLP</a></li>
           <li>#icai-gnICAI Guidance Notes</a></li>
-          <li>#igaapInternational GAAP</a></li>
+          <li><a href="#rnational GAAP</a></li>
           <li>#updatesLatest amendments</a></li>
         </ol>
       </nav>
@@ -269,7 +273,6 @@
           <ul class="links columns">
             <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 101</a></li>
             <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 102</a></li>
-            <!-- add more if you want each standard as a direct link -->
           </ul>
         </details>
         <details class="drop"><summary>Core Ind AS (Vol II)</summary>
@@ -313,11 +316,11 @@
         <h2>Companies Act, 2013 & Rules</h2>
         <ul class="links">
           <li><a target="_blank" href="https://www.indiacode.nic.in/bitstream/123456789/2114/5/A2013-18.pdf">Companies Act, 2013 (Bare Act)</a></li>
-          <li><a target="_blank" href="https://www.mca.gov.in/content/mca/global/en/acts-rules/ebooks/notifications.html)</a></li>
+          <li><a target="_blank" href="https://www.mca.gov.in/content/mca/global/en/actsns.htmlMCA Notifications (e‑Book)</a></li>
         </ul>
         <details class="drop"><summary>Key Rules</summary>
           <ul class="links columns">
-            <li>https://www.mca.gov.in/content/mca/global/en/acts-rules/ebooks/notifications.htmlCompanies (Accounts) Rules, 2014</a></li>
+            <li><a target="_blank" href="https://www.mca.gov.in/content/mca/global/en/acts-rules/ebooks/notifications.htmls, 2014</a></li>
           </ul>
         </details>
       </article>
@@ -341,7 +344,7 @@
         <h2>Direct Tax (Income‑tax)</h2>
         <ul class="links">
           <li><a target="_blank" href="https://incometaxindia.gov.in/Pages/acts/income-tax-act.aspx">Income‑tax Act, 1961</a></li>
-          <li><a target="_metaxindia.gov.in/pages/rules/income-tax-rules-1962.aspxIncome‑tax Rules, 1962</a></li>
+          <li>https://incometaxindia.gov.in/pages/rules/income-tax-rules-1962.aspxIncome‑tax Rules, 1962</a></li>
         </ul>
       </article>
 
@@ -416,6 +419,33 @@
       btn.addEventListener('click',()=>{ const now=document.documentElement.classList.contains('light')?'dark':'light'; localStorage.setItem(key,now); apply(now); });
     })();
 
+    // Robust in-page navigation: handle all hash links and scroll with offset
+    (function(){
+      const OFFSET = (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 60)
+                   + (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--topnav-h')) || 44)
+                   + 18;
+
+      function goTo(id){
+        const el = document.getElementById(id);
+        if(!el) return;
+        const y = el.getBoundingClientRect().top + window.pageYOffset - OFFSET;
+        window.scrollTo({top:y, behavior:'smooth'});
+      }
+
+      // Intercept all internal anchors
+      document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click', (e)=>{
+          const raw = a.getAttribute('href');
+          const id  = decodeURIComponent((raw||'').slice(1));
+          if(id){
+            e.preventDefault();
+            goTo(id);
+            history.replaceState(null, '', '#'+id); // keep URL fragment in sync
+          }
+        });
+      });
+    })();
+
     // Quick filter: show/hide cards + auto-open matching details
     (function(){
       const input=document.getElementById('quickSearch'); if(!input) return;
@@ -463,4 +493,3 @@
   </script>
 </body>
 </html>
-``
