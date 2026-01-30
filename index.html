@@ -3,287 +3,103 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="light dark" />
   <title>Accounting & Regulatory Standards – India</title>
-
-  <style>
-    /* =========================
-       DESIGN TOKENS
-    ==========================*/
-    :root{
-      --bg:#0b132b; --bg2:#0f1e3a; --card:rgba(17,25,40,.65);
-      --border:rgba(255,255,255,.12); --text:#e6e9f2; --muted:#a9b4d6;
-      --accent:#6ae3ff; --accent-2:#9b8cff;
-      --shadow:0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
-      --radius:16px;
-      --header-h:60px;      /* sticky site header height */
-      --topnav-h:44px;      /* sticky section pills height */
-      --container:1200px;   /* page max width */
-    }
-    @media (prefers-color-scheme: light){
-      :root{
-        --bg:#f7f9fc; --bg2:#ffffff; --card:rgba(255,255,255,.85);
-        --border:rgba(0,0,0,.08); --text:#0e1726; --muted:#4a5976;
-        --accent:#2563eb; --accent-2:#7c3aed;
-        --shadow:0 8px 24px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.6);
-      }
-    }
-
-    /* =========================
-       CORE LAYOUT / BASE
-    ==========================*/
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family:"Book Antiqua","Palatino Linotype",Palatino,serif;
-      color:var(--text);
-      background:
-        radial-gradient(1200px 800px at 10% -20%, rgba(106,227,255,.25), transparent 60%),
-        radial-gradient(1200px 800px at 110% 10%, rgba(155,140,255,.18), transparent 60%),
-        linear-gradient(180deg, var(--bg), var(--bg2));
-      background-attachment: fixed;
-
-      /* Reserve space for the two sticky bars so content never hides underneath */
-      padding-top: calc(var(--header-h) + var(--topnav-h));
-    }
-    body::after{
-      content:""; position:fixed; inset:0; z-index:-1; opacity:.9;
-      background:
-        radial-gradient(1200px 800px at 10% -20%, rgba(106,227,255,.20), transparent 60%),
-        radial-gradient(1200px 800px at 110% 10%, rgba(155,140,255,.14), transparent 60%),
-        linear-gradient(180deg, var(--bg), var(--bg2));
-    }
-
-    .wrap{max-width:var(--container); margin:0 auto; padding:0 20px}
-    .skip{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
-    .skip:focus{left:16px;top:16px;width:auto;height:auto;background:#000;color:#fff;padding:8px 12px;border-radius:8px;z-index:9999}
-
-    /* =========================
-       STICKY SITE HEADER
-    ==========================*/
-    .site-header{
-      height:var(--header-h);
-      position:fixed; top:0; left:0; right:0; z-index:1000;
-      display:flex; align-items:center;
-      border-bottom:1px solid var(--border);
-      background:rgba(10,16,32,.6);
-      backdrop-filter:saturate(180%) blur(14px);
-    }
-    .brand{display:flex; align-items:center; gap:10px}
-    .brand h1{margin:0; font-size:18px}
-    .brand .sub{font-size:12px; color:var(--muted)}
-    .site-header .actions{margin-left:auto}
-    .site-header .actions button{
-      all:unset; cursor:pointer; padding:8px; border-radius:10px; border:1px solid var(--border)
-    }
-    .site-header .actions button:hover{background:rgba(255,255,255,.06)}
-
-    /* =========================
-       STICKY SECTION PILL BAR
-    ==========================*/
-    .topnav{
-      position:fixed; top:var(--header-h); left:0; right:0; z-index:999;
-      border-bottom:1px solid var(--border);
-      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-    }
-    .pillbar{
-      display:flex; gap:8px; align-items:center; height:var(--topnav-h);
-      overflow:auto; scrollbar-width:none
-    }
-    .pillbar::-webkit-scrollbar{display:none}
-    .pillbar a{
-      flex:0 0 auto; padding:6px 10px; border-radius:999px; border:1px solid var(--border);
-      text-decoration:none; color:var(--text); font-size:.92rem; white-space:nowrap
-    }
-    .pillbar a:hover{background:linear-gradient(90deg, rgba(106,227,255,.25), rgba(155,140,255,.25));}
-
-    /* =========================
-       HERO / SEARCH
-    ==========================*/
-    .hero{padding:20px 0}
-    .hero-inner{
-      background:var(--card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px
-    }
-    .hero h2{margin:0 0 6px; font-size:26px}
-    .hero p{margin:0 0 10px; color:var(--muted)}
-    .search-wrap{
-      display:flex; align-items:center; gap:8px; margin-top:10px;
-      background:rgba(255,255,255,.06); border:1px solid var(--border);
-      border-radius:12px; padding:8px 10px
-    }
-    .search-wrap input{flex:1; background:transparent; border:0; outline:none; color:var(--text)}
-
-    /* =========================
-       MAIN GRID (TOC + CONTENT)
-    ==========================*/
-    .layout{display:grid; grid-template-columns: 280px minmax(0,1fr); gap:20px}
-    .toc{
-      position:sticky; top:calc(var(--header-h) + var(--topnav-h) + 16px);
-      align-self:start; z-index:5;
-    }
-    .toc nav{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:14px}
-    .toc h3{margin:0 0 6px; font-size:14px; color:var(--muted)}
-    .toc ol{margin:8px 0 0 16px; padding:0; line-height:1.6}
-    .toc li{list-style:decimal}
-    .toc a{
-      color:var(--text); text-decoration:none; word-break:break-word; display:inline-block;
-      pointer-events:auto;
-    }
-    .toc a:hover{color:var(--accent)}
-    /* Hide any extension-injected href previews (before/after pseudo content) */
-    .toc a::before, .toc a::after{ content:none !important; }
-    .toc code, .toc .hash, .toc [data-href]::before{ display:none !important; }
-
-    .cards{display:grid; gap:16px; z-index:10}
-    .card{
-      background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
-      box-shadow:var(--shadow); padding:18px; animation:fadeUp .45s ease both
-    }
-    .card.wide{grid-column:1 / -1}
-    .card .lead{color:var(--muted)}
-    .card a{color:var(--accent)} .card a:hover{color:var(--accent-2)}
-    .card-head{display:flex; justify-content:space-between; align-items:center}
-    .ghost{background:transparent; border:1px solid var(--border); color:var(--text); padding:6px 10px; border-radius:10px; cursor:pointer}
-    .ghost:hover{background:rgba(255,255,255,.06)}
-
-    /* Collapsibles */
-    details.drop{border:1px solid var(--border); border-radius:12px; margin-top:10px; background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02))}
-    details.drop>summary{list-style:none; cursor:pointer; padding:10px 12px; font-weight:600; position:relative}
-    details.drop>summary::marker, details.drop>summary::-webkit-details-marker{display:none}
-    details.drop>summary:after{content:'▸'; position:absolute; right:12px; transition:transform .2s ease; opacity:.7}
-    details.drop[open]>summary:after{transform:rotate(90deg)}
-    .links{margin:10px 0 0 18px}
-    .links li{margin:6px 0}
-    .links.columns{columns: 3 240px}
-
-    /* CRITICAL: anchor offset below sticky bars */
-    .card, .card[id]{scroll-margin-top: calc(var(--header-h) + var(--topnav-h) + 18px);}
-
-    /* Updates list */
-    .updates{display:grid; gap:12px; margin-top:12px}
-    .update{padding:12px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)); border:1px solid var(--border)}
-    .update h4{margin:0 0 6px}
-    .update .meta{font-size:12px; color:var(--muted)}
-
-    .site-footer{margin:26px auto; color:var(--muted);}
-    .site-footer a{color:var(--accent)}
-
-    @keyframes fadeUp{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)}}
-
-    @media(max-width:960px){
-      .layout{grid-template-columns:1fr}
-      .toc{display:none}                 /* hide TOC on mobile */
-      .links.columns{columns:1}
-    }
-  </style>
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
-  #contentSkip to content</a>
-
-  <!-- ========== Sticky Site Header ========== -->
-  <header class="site-header">
-    <div class="wrap" style="display:flex; align-items:center; gap:12px;">
-      <div class="brand">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 4h18v2H3V4zm0 5h18v2H3V9zm0 5h12v2H3v-2zm0 5h18v2H3v-2z" fill="currentColor"/></svg>
-        <div>
-          <h1>Accounting & Regulatory Standards</h1>
-          <div class="sub">India • curated official links + live updates</div>
-        </div>
-      </div>
-      <div class="actions" style="margin-left:auto">
-        <button id="themeToggle" aria-label="Toggle theme" title="Toggle theme">
-          <svg class="sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M6.76 4.84l-1.8-1.79L3.17 4.84 4.96 6.63 6.76 4.84zM1 13h3v-2H1v2zm10-9h2V1h-2v3zm7.03.21l-1.79 1.79 1.79 1.79 1.79-1.79-1.79-1.79zM17 13h3v-2h-3v2zM12 18a6 6 0 100-12 6 6 0 000 12zm-1 5h2v-3h-2v3zm7.07-2.93l1.79 1.79 1.41-1.41-1.79-1.79-1.41 1.41zM4.96 17.37l-1.79 1.79 1.41 1.41 1.79-1.79-1.41-1.41z"/></svg>
-        </button>
-      </div>
+  <a class="skip" href="#content">Skip to content</a>
+  <header class="site-header" role="banner">
+    <div class="brand">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 4h18v2H3V4zm0 5h18v2H3V9zm0 5h12v2H3v-2zm0 5h18v2H3v-2z" fill="currentColor"/></svg>
+      <h1>Accounting & Regulatory Standards</h1>
+      <span class="sub">India • curated official links + live updates</span>
+    </div>
+    <div class="actions">
+      <button id="themeToggle" aria-label="Toggle theme" title="Toggle theme">
+        <svg class="sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M6.76 4.84l-1.8-1.79L3.17 4.84 4.96 6.63 6.76 4.84zM1 13h3v-2H1v2zm10-9h2V1h-2v3zm7.03.21l-1.79 1.79 1.79 1.79 1.79-1.79-1.79-1.79zM17 13h3v-2h-3v2zM12 18a6 6 0 100-12 6 6 0 000 12zm-1 5h2v-3h-2v3zm7.07-2.93l1.79 1.79 1.41-1.41-1.79-1.79-1.41 1.41zM4.96 17.37l-1.79 1.79 1.41 1.41 1.79-1.79-1.41-1.41z"/></svg>
+      </button>
     </div>
   </header>
 
-  <!-- ========== Sticky Section Pills ========== -->
-  <div class="topnav">
-    <div class="wrap">
-      <nav class="pillbar" aria-label="Quick jump to sections">
-        <andasInd AS</a>
-        #asAS</a>
-        #auditAuditing</a>
-        #companiesCompanies Act</a>
-        #gstGST</a>
-        #directtaxIncome‑tax</a>
-        <a href="#/a>
-        #rbiRBI & FEMA</a>
-        #nfraNFRA</a>
-        <alpLLP</a>
-        #icai-gnICAI GN</a>
-        #igaapIntl GAAP</a>
-        #updatesAmendments</a>
-      </nav>
-    </div>
-  </div>
-
-  <!-- ========== Hero / Search ========== -->
-  <div class="wrap hero">
+  <div class="hero">
     <div class="hero-inner">
       <h2>One stop. Zero hunting.</h2>
       <p>Browse authoritative sources for Ind AS, AS, SAs, Companies Act, GST, Income‑tax, SEBI, RBI/FEMA, NFRA & more. Stay current with an auto‑updating amendments feed.</p>
-
-      <div class="search-wrap" role="search" aria-label="Quick filter">
+      <div class="search-wrap" role="search">
         <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 001.57-4.23A6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 21.49 21.49 20 15.5 14zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-        <input id="quickSearch" type="search" placeholder="Quick filter: Try 'LODR', 'Sec 129', 'Ind AS 115'…" />
+        <input id="quickSearch" type="search" placeholder="Quick filter: Try 'LODR', 'Sec 129', 'Ind AS 115'…" aria-label="Filter sections">
+      </div>
+      <div class="pillbar" aria-label="Quick jump">
+        <a href="#indas">Ind AS</a><a href="#as">AS</a><a href="#audit">Auditing</a><a href="#companies">Companies Act</a><a href="#gst">GST</a><a href="#directtax">Income‑tax</a><a href="#sebi">SEBI</a><a href="#rbi">RBI & FEMA</a><a href="#nfra">NFRA</a><a href="#llp">LLP</a><a href="#icai-gn">ICAI GN</a><a href="#igaap">Intl GAAP</a><a href="#updates">Amendments</a>
       </div>
     </div>
   </div>
 
-  <!-- ========== Main: TOC + Cards ========== -->
-  <main id="content" class="wrap layout">
-    <!-- Left TOC -->
-    <aside class="toc" aria-label="On this page">
+  <main id="content" class="layout">
+    <aside class="toc" aria-label="Sections">
       <nav>
         <h3>On this page</h3>
         <ol>
-          <li>#indasInd AS</a></li>
-          <li>#asAS</a></li>
-          <li>#auditAuditing & Assurance</a></li>
-          <li>#companiesCompanies Act & MCA</a></li>
-          <li><a href="#gstli>
-          <li><a href="#directtaxx</a></li>
-          <li><sebiSEBI</a></li>
-          <li><a href="#rbiA</a></li>
-          <li>#nfraNFRA</a></li>
-          <li>#llpLLP</a></li>
-          <li>#icai-gnICAI Guidance Notes</a></li>
-          <li><a href="#rnational GAAP</a></li>
-          <li>#updatesLatest amendments</a></li>
+          <li><a href="#indas">Ind AS</a></li>
+          <li><a href="#as">AS</a></li>
+          <li><a href="#audit">Auditing & Assurance</a></li>
+          <li><a href="#companies">Companies Act & MCA</a></li>
+          <li><a href="#gst">GST</a></li>
+          <li><a href="#directtax">Income‑tax</a></li>
+          <li><a href="#sebi">SEBI</a></li>
+          <li><a href="#rbi">RBI / FEMA</a></li>
+          <li><a href="#nfra">NFRA</a></li>
+          <li><a href="#llp">LLP</a></li>
+          <li><a href="#icai-gn">ICAI Guidance Notes</a></li>
+          <li><a href="#igaap">International GAAP</a></li>
+          <li><a href="#updates">Latest amendments</a></li>
         </ol>
       </nav>
     </aside>
 
-    <!-- Content cards -->
     <section class="cards">
-      <!-- Ind AS -->
       <article id="indas" class="card">
         <h2>Indian Accounting Standards (Ind AS)</h2>
         <p class="lead">Official resources and the latest MCA alignments.</p>
         <ul class="links">
           <li><a target="_blank" href="https://www.icai.org/post/indian-accounting-standards-indas">ICAI: Ind AS Portal</a></li>
-          <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS Online – Vol I</a></li>
-          <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS Online – Vol II</a></li>
+          <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS Online Vol I</a></li>
+          <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-II.html">Ind AS Online Vol II</a></li>
         </ul>
-        <details class="drop"><summary>Ind AS 101–117 (Vol I)</summary>
+        <details class="drop"><summary>Ind AS 101+ (Vol I)</summary>
           <ul class="links columns">
             <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 101</a></li>
             <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 102</a></li>
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 103</a></li>
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 104</a></li>
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 105</a></li>
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 106</a></li>
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 107</a></li>
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 108</a></li>
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 109</a></li>
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 110</a></li>
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 111</a></li>
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 112</a></li>
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 113</a></li>
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 114</a></li>
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 115</a></li>
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 116</a></li>
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 117</a></li>
           </ul>
         </details>
         <details class="drop"><summary>Core Ind AS (Vol II)</summary>
           <ul class="links columns">
-            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 1</a></li>
-            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-I.html">Ind AS 2</a></li>
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-II.html">Ind AS 1</a></li>
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-II.html">Ind AS 2</a></li>
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-II.html">Ind AS 7</a></li>
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-II.html">Ind AS 8</a></li>
+            <li><a target="_blank" href="https://indasaccess.icai.org/2023-2024/AS/volume-II.html">Ind AS 10</a></li>
+            <!-- truncated for brevity -->
           </ul>
         </details>
       </article>
 
-      <!-- AS -->
       <article id="as" class="card">
         <h2>Accounting Standards (AS) – non‑Ind AS companies</h2>
         <ul class="links">
@@ -293,80 +109,82 @@
           <ul class="links columns">
             <li><a target="_blank" href="https://www.icai.org/post/accounting-standards-as">AS 1</a></li>
             <li><a target="_blank" href="https://www.icai.org/post/accounting-standards-as">AS 2</a></li>
+            <!-- etc. -->
           </ul>
         </details>
       </article>
 
-      <!-- Auditing -->
       <article id="audit" class="card">
         <h2>Auditing & Assurance</h2>
         <ul class="links">
-          <li><a target="_blank" href="https://www.icai.org/category/auditing-review-and-other-standards-complete-text">ICAI: SAs / SREs / SAEs / SRS</a></li>
-          <li><a target="_blank" href="https://internalaudit.icai.org/standards-on-internal-audit/">Standards on Internal Audit</a></li>
+          <li><a target="_blank" href="https://www.icai.org/category/auditing-review-and-other-standards-complete-text">ICAI: Engagement & Quality Control, SAs, SREs, SAEs, SRS</a></li>
+          <li><a target="_blank" href="https://internalaudit.icai.org/standards-on-internal-audit/">Standards on Internal Audit (SIA)</a></li>
         </ul>
-        <details class="drop"><summary>Standards on Auditing</summary>
+        <details class="drop"><summary>Standards on Auditing (SAs)</summary>
           <ul class="links columns">
             <li><a target="_blank" href="https://www.icai.org/category/auditing-review-and-other-standards-complete-text">SA 200</a></li>
+            <!-- etc. up to SA 720 -->
           </ul>
         </details>
       </article>
 
-      <!-- Companies Act -->
       <article id="companies" class="card">
         <h2>Companies Act, 2013 & Rules</h2>
         <ul class="links">
           <li><a target="_blank" href="https://www.indiacode.nic.in/bitstream/123456789/2114/5/A2013-18.pdf">Companies Act, 2013 (Bare Act)</a></li>
-          <li><a target="_blank" href="https://www.mca.gov.in/content/mca/global/en/actsns.htmlMCA Notifications (e‑Book)</a></li>
+          <li><a target="_blank" href="https://www.mca.gov.in/content/mca/global/en/acts-rules/ebooks/notifications.html">MCA Notifications (Acts & Rules e‑Book)</a></li>
         </ul>
         <details class="drop"><summary>Key Rules</summary>
           <ul class="links columns">
-            <li><a target="_blank" href="https://www.mca.gov.in/content/mca/global/en/acts-rules/ebooks/notifications.htmls, 2014</a></li>
+            <li><a target="_blank" href="https://www.mca.gov.in/content/mca/global/en/acts-rules/ebooks/notifications.html">Companies (Accounts) Rules, 2014</a></li>
+            <!-- etc. -->
           </ul>
         </details>
       </article>
 
-      <!-- GST -->
       <article id="gst" class="card">
         <h2>Goods & Services Tax (GST)</h2>
         <ul class="links">
           <li><a target="_blank" href="https://cbic-gst.gov.in/">CBIC GST Portal</a></li>
-          <li><a target="_blank" href="https://taxinformation.cbic.gov.in/">CBIC Tax Info Portal</a></li>
+          <li><a target="_blank" href="https://taxinformation.cbic.gov.in/">CBIC Tax Information Portal</a></li>
         </ul>
-        <details class="drop"><summary>Lookups</summary>
+        <details class="drop"><summary>Common lookups</summary>
           <ul class="links columns">
-            <li><a target="_blank" href="https://cbic-gst.gov.in/">Central Tax Notifications</a></li>
+            <li><a target="_blank" href="https://cbic-gst.gov.in/notifications-cgst.html">Central Tax Notifications</a></li>
           </ul>
         </details>
       </article>
 
-      <!-- Direct Tax -->
       <article id="directtax" class="card">
         <h2>Direct Tax (Income‑tax)</h2>
         <ul class="links">
           <li><a target="_blank" href="https://incometaxindia.gov.in/Pages/acts/income-tax-act.aspx">Income‑tax Act, 1961</a></li>
-          <li>https://incometaxindia.gov.in/pages/rules/income-tax-rules-1962.aspxIncome‑tax Rules, 1962</a></li>
+          <li><a target="_blank" href="https://incometaxindia.gov.in/pages/rules/income-tax-rules-1962.aspx">Income‑tax Rules, 1962</a></li>
         </ul>
       </article>
 
-      <!-- SEBI -->
       <article id="sebi" class="card">
         <h2>Capital Markets (SEBI)</h2>
         <ul class="links">
           <li><a target="_blank" href="https://www.sebi.gov.in/sebiweb/home/HomeAction.do?doListing=yes&sid=1&ssid=3&smid=0">SEBI – Regulations</a></li>
           <li><a target="_blank" href="https://www.sebi.gov.in/sebiweb/home/HomeAction.do?doListing=yes&sid=1&ssid=7&smid=0">SEBI – Circulars</a></li>
         </ul>
+        <details class="drop"><summary>Key Regulations</summary>
+          <ul class="links columns">
+            <li><a target="_blank" href="https://www.sebi.gov.in/sebiweb/home/HomeAction.do?doListing=yes&sid=1&ssid=3&smid=0">LODR 2015</a></li>
+            <!-- etc. -->
+          </ul>
+        </details>
       </article>
 
-      <!-- RBI / FEMA -->
       <article id="rbi" class="card">
         <h2>Banking / FEMA (RBI & DEA)</h2>
         <ul class="links">
           <li><a target="_blank" href="https://www.rbi.org.in/Scripts/BS_ViewMasterDirections.aspx">RBI Master Directions</a></li>
-          <li><a target="_blank" href="http://dea.gov.in/acts-policies/fema-act-1999">FEMA Act, 1999</a></li>
+          <li><a target="_blank" href="http://dea.gov.in/acts-policies/fema-act-1999">FEMA Act, 1999 (DEA)</a></li>
         </ul>
       </article>
 
-      <!-- NFRA -->
       <article id="nfra" class="card">
         <h2>NFRA (Oversight)</h2>
         <ul class="links">
@@ -375,121 +193,40 @@
         </ul>
       </article>
 
-      <!-- LLP -->
-      <article id="llp" class="card">
-        <h2>Limited Liability Partnership (LLP)</h2>
-        <ul class="links">
-          <li><a target="_blank" href="https://www.indiacode.nic.in/bitstream/123456789/2023/1/A2009-06.pdf">LLP Act, 2008 (Bare Act)</a></li>
-        </ul>
-      </article>
-
-      <!-- ICAI GN -->
       <article id="icai-gn" class="card">
         <h2>ICAI Guidance Notes</h2>
         <ul class="links">
           <li><a target="_blank" href="https://www.icai.org/post/guidance-notes">ICAI – Guidance Notes (Index)</a></li>
           <li><a target="_blank" href="https://www.icai.org/post/list-of-guidance-notes-on-accounting-aspects">GN on Accounting Aspects – list</a></li>
-          <li><a target="_blank" href="https://www.icai.org/post/guidance-notes-on-auditing-aspects">GN on Auditing Aspects – index</a></li>
+          <li><a target="_blank" href="https://www.icai.org/post/508">GN on Auditing Aspects – index</a></li>
         </ul>
       </article>
 
-      <!-- Latest Amendments -->
+      <article id="igaap" class="card">
+        <h2>International GAAP – Big 4 (Public resources)</h2>
+        <details class="drop"><summary>Deloitte</summary>
+          <ul class="links">
+            <li><a target="_blank" href="https://www.iasplus.com/">IAS Plus</a></li>
+          </ul>
+        </details>
+      </article>
+
       <article id="updates" class="card wide">
         <div class="card-head">
           <h2>Latest Amendments & Notifications</h2>
-          <div class="card-actions"><button id="refresh" class="ghost" type="button">Refresh</button></div>
+          <div class="card-actions">
+            <button id="refresh" class="ghost">Refresh</button>
+          </div>
         </div>
         <div class="updates" id="updates-list" aria-live="polite"></div>
       </article>
     </section>
   </main>
 
-  <footer class="wrap site-footer">
-    <div>© <span id="year"></span> • Built for quick compliance navigation • #contentBack to top</a></div>
+  <footer class="site-footer">
+    <div>© 2026 • Built for quick compliance navigation • <a href="#content">Back to top</a></div>
   </footer>
 
-  <script>
-    // Theme toggle (light/dark) with localStorage
-    (function(){
-      const btn=document.getElementById('themeToggle'); if(!btn) return;
-      const key='prefers-theme';
-      const apply=t=> t==='light' ? document.documentElement.classList.add('light')
-                                  : document.documentElement.classList.remove('light');
-      const saved=localStorage.getItem(key); if(saved) apply(saved);
-      btn.addEventListener('click',()=>{ const now=document.documentElement.classList.contains('light')?'dark':'light'; localStorage.setItem(key,now); apply(now); });
-    })();
-
-    // Robust in-page navigation: handle all hash links and scroll with offset
-    (function(){
-      const OFFSET = (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 60)
-                   + (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--topnav-h')) || 44)
-                   + 18;
-
-      function goTo(id){
-        const el = document.getElementById(id);
-        if(!el) return;
-        const y = el.getBoundingClientRect().top + window.pageYOffset - OFFSET;
-        window.scrollTo({top:y, behavior:'smooth'});
-      }
-
-      // Intercept all internal anchors
-      document.querySelectorAll('a[href^="#"]').forEach(a=>{
-        a.addEventListener('click', (e)=>{
-          const raw = a.getAttribute('href');
-          const id  = decodeURIComponent((raw||'').slice(1));
-          if(id){
-            e.preventDefault();
-            goTo(id);
-            history.replaceState(null, '', '#'+id); // keep URL fragment in sync
-          }
-        });
-      });
-    })();
-
-    // Quick filter: show/hide cards + auto-open matching details
-    (function(){
-      const input=document.getElementById('quickSearch'); if(!input) return;
-      const cards=[...document.querySelectorAll('.cards .card')];
-      const norm=s=>(s||'').toLowerCase();
-      input.addEventListener('input',()=>{
-        const q=norm(input.value);
-        cards.forEach(card=>{
-          const show=(q===''||norm(card.textContent).includes(q));
-          card.style.display=show?'':'none';
-          card.querySelectorAll('details.drop').forEach(d=> d.open = q!=='' && norm(d.textContent).includes(q));
-        });
-      });
-    })();
-
-    // Amendments loader
-    async function loadUpdates(){
-      const list=document.getElementById('updates-list');
-      try{
-        const res=await fetch('data/amendments.json?_='+Date.now());
-        const data=await res.json();
-        const items=(data.items||[]).slice(0,60);
-        if(!items.length){
-          list.innerHTML='<p class="lead" style="color:var(--muted)">No items yet. First run the workflow once: <strong>Actions ▸ Fetch amendments daily ▸ Run workflow</strong>.</p>';
-          return;
-        }
-        list.innerHTML='';
-        items.forEach(it=>{
-          const div=document.createElement('div'); div.className='update';
-          div.innerHTML=`<h4>${it.link}${it.title}</a></h4>
-                         <div class="meta">${it.source||''}${it.date?` • ${it.date}`:''}</div>
-                         ${it.summary?`<p>${it.summary}</p>`:''}`;
-          list.appendChild(div);
-        });
-      }catch(e){
-        console.error(e);
-        list.innerHTML='<p class="lead" style="color:var(--muted)">Could not load updates. Ensure <code>data/amendments.json</code> exists in your repo.</p>';
-      }
-    }
-    document.getElementById('refresh')?.addEventListener('click', loadUpdates);
-    window.addEventListener('DOMContentLoaded', ()=>{
-      document.getElementById('year').textContent=new Date().getFullYear();
-      loadUpdates();
-    });
-  </script>
+  <script src="assets/app.js"></script>
 </body>
 </html>
